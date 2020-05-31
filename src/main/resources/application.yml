@@ -1,0 +1,17 @@
+server:
+  port: 8181
+
+spring:
+  security:
+    user:
+      name: user
+      password: pass123
+
+security:
+  oauth2:
+    client:
+      client-id: web
+      client-secret: pin
+      access-token-validity-seconds: 1800
+
+
