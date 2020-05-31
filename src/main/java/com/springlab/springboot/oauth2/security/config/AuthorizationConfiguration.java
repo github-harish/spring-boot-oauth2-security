@@ -6,17 +6,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 import java.util.List;
 
 @Configuration
-public class AuthorizationConfiguration extends WebSecurityConfigurerAdapter implements AuthorizationServerConfigurer {
+public class AuthorizationConfiguration extends AuthorizationServerConfigurerAdapter {
 
 
     @Value("${security.oauth2.client.client-id}")
@@ -28,15 +30,12 @@ public class AuthorizationConfiguration extends WebSecurityConfigurerAdapter imp
     @Value("${security.oauth2.client.access-token-validity-seconds}")
     private int accessTokenValidity;
 
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 
     @Autowired
     AuthenticationManager authenticationManager;
 
-    private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
